@@ -1,0 +1,22 @@
+services:
+  ordermanagement.api:
+    image: ${DOCKER_REGISTRY-}ordermanagementapi
+    container_name: ordermanagement_v2.api
+    build:
+      context: .
+      dockerfile: OrderManagement.API/Dockerfile
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+
+  ordermanagement.database:
+    image: postgres:latest
+    container_name: ordermanagement_v2.database
+    environment: 
+        - POSTGRES_DB=orderManagement_v2
+        - POSTGRES_USER=example
+        - POSTGRES_PASSWORD=admin
+    volumes:
+        - ./.containers/products-db:/var/lib/postgresql/data
+    ports:
+        - "5432:5432"
