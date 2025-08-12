@@ -18,6 +18,10 @@ namespace OrderManagement.API.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Adds Discount to postgreSql database.
+        /// </summary>
+        /// <returns>Added discount object with ID, percentage and minimum quantity.</returns>
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
