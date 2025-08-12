@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using OrderManagement.DATA.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace OrderManagement.DATA
                : base(options)
         {
         }
+
+        public DbSet<Product> Products { get; set; }
 
     }
 }

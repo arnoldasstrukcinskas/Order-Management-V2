@@ -17,6 +17,6 @@ services:
         - POSTGRES_USER=example
         - POSTGRES_PASSWORD=admin
     volumes:
-        - ./.containers/products-db:/var/lib/postgresql/data
+        - ./.containers/OrderManagement_v2:/var/lib/postgresql/data
     ports:
         - "5432:5432"
