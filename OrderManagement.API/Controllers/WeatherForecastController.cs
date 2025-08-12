@@ -19,7 +19,7 @@ namespace OrderManagement.API.Controllers
         }
 
         /// <summary>
-        /// Adds Discount to postgreSql database.
+        /// Adds Discount to postgreSql databaseaaaaaa.
         /// </summary>
         /// <returns>Added discount object with ID, percentage and minimum quantity.</returns>
         [HttpGet(Name = "GetWeatherForecast")]

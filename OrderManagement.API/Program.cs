@@ -1,5 +1,8 @@
-using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi.Models;
+using System;
 using System.Reflection;
+using OrderManagement.DATA;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +27,10 @@ builder.Services.AddSwaggerGen(c =>
     c.IncludeXmlComments(xmlPath);
 });
 
+//Get connection string from appsettings.json
+builder.Services.AddDbContext<AppDbContext>(
+    options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -31,6 +38,27 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+// Try connect to database
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+    try
+    {
+        await context.Database.CanConnectAsync();
+        Console.WriteLine("✅ Database connection successful!");
+
+        //// Apply migrations automatically
+        //await context.Database.MigrateAsync();
+        //Console.WriteLine("✅ Database migrations applied!");
+
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"❌ Database setup failed: {ex.Message}");
+    }
 }
 
 app.UseHttpsRedirection();
