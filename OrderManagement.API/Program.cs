@@ -1,14 +1,25 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using OrderManagement.BLL.Interfaces;
+using OrderManagement.BLL.Services;
+using OrderManagement.DATA;
+using OrderManagement.DATA.Entities;
+using OrderManagement.DATA.Repositories.Interfaces;
+using OrderManagement.DATA.Repositories.Repositories;
 using System;
 using System.Reflection;
-using OrderManagement.DATA;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+//Repositories
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+//Services
+builder.Services.AddScoped<IProductService, ProductService>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
@@ -50,9 +61,9 @@ using (var scope = app.Services.CreateScope())
         await context.Database.CanConnectAsync();
         Console.WriteLine("✅ Database connection successful!");
 
-        //// Apply migrations automatically
-        //await context.Database.MigrateAsync();
-        //Console.WriteLine("✅ Database migrations applied!");
+        // Apply migrations automatically
+        await context.Database.MigrateAsync();
+        Console.WriteLine("✅ Database migrations applied!");
 
     }
     catch (Exception ex)
