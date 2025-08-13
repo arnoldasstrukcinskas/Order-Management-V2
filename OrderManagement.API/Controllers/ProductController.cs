@@ -78,6 +78,27 @@ namespace OrderManagement.API.Controllers
         }
 
         /// <summary>
+        /// Sets specified discount for specified product.
+        /// </summary>
+        /// <param productName="Enter products name">The name of the products to set discount.</param>
+        /// <param discountName="Enter disocunt name">The name of the specified discount to set.</param>
+        /// <returns>A product objects with IDs, names, descriptions, and prices.</returns>
+        [HttpPut]
+        public async Task<IActionResult> SetDiscount(string productName, string discountName)
+        {
+            var product = await _productService.SetDiscount(productName, discountName);
+
+            if(product != null)
+            {
+                return Ok(product);
+            }
+            else
+            {
+                return BadRequest("Discount was not set.");
+            }
+        }
+
+        /// <summary>
         /// Finds a product by name and deletes it.
         /// </summary>
         /// <param name="Enter product id">The id of the product to delete.</param>

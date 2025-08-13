@@ -19,6 +19,6 @@ namespace OrderManagement.DATA
         }
 
         public DbSet<Product> Products { get; set; }
-
+        public DbSet<Discount> Discounts { get; set; }
     }
 }

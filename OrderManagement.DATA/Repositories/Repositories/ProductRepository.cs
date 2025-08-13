@@ -25,7 +25,7 @@ namespace OrderManagement.DATA.Repositories.Repositories
             return product;
         }
 
-        public async Task <Product> UpdateProductAsync(Product product)
+        public async Task<Product> UpdateProductAsync(Product product)
         {
             _dbContext.Products.Update(product);
             await _dbContext.SaveChangesAsync();
@@ -48,14 +48,18 @@ namespace OrderManagement.DATA.Repositories.Repositories
             return product;
         }
 
-        public async Task <Product> GetProductByName(string name)
+        public async Task<Product> GetProductByName(string name)
         {
-            return await _dbContext.Products.FirstOrDefaultAsync(product => product.Name.Equals(name));
+            return await _dbContext.Products
+                .Include(p => p.Discount)
+                .FirstOrDefaultAsync(p => p.Name.Equals(name));
         }
 
-        public async Task <List<Product>> GetProductsByName(string name)
+        public async Task<List<Product>> GetProductsByName(string name)
         {
-            return await _dbContext.Products.Where(product => product.Name.Contains(name)).ToListAsync();
+            return await _dbContext.Products.Where(product => product.Name.Contains(name))
+                .Include(p => p.Discount)
+                .ToListAsync();
         }
     }
 }

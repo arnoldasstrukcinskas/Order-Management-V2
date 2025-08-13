@@ -21,6 +21,29 @@ namespace OrderManagement.DATA.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("OrderManagement.DATA.Entities.Discount", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("MinQuantity")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Percentage")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Discounts");
+                });
+
             modelBuilder.Entity("OrderManagement.DATA.Entities.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -33,6 +56,9 @@ namespace OrderManagement.DATA.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("DiscountId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -42,7 +68,18 @@ namespace OrderManagement.DATA.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DiscountId");
+
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("OrderManagement.DATA.Entities.Product", b =>
+                {
+                    b.HasOne("OrderManagement.DATA.Entities.Discount", "Discount")
+                        .WithMany()
+                        .HasForeignKey("DiscountId");
+
+                    b.Navigation("Discount");
                 });
 #pragma warning restore 612, 618
         }

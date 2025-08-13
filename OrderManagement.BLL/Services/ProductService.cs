@@ -13,9 +13,11 @@ namespace OrderManagement.BLL.Services
     public class ProductService : IProductService
     {
         private readonly IProductRepository _productRepository;
-        public ProductService(IProductRepository productRepository)
+        private readonly IDiscountRepository _discountRepository;
+        public ProductService(IProductRepository productRepository, IDiscountRepository discountRepository)
         {
             _productRepository = productRepository;
+            _discountRepository = discountRepository;
         }
 
 
@@ -45,6 +47,26 @@ namespace OrderManagement.BLL.Services
         public async Task<List<Product>> GetProductsByName(string name)
         {
             return await _productRepository.GetProductsByName(name);
+        }
+
+        public async Task<Product> SetDiscount(string productName, string discountName)
+        {
+            var product = await _productRepository.GetProductByName(productName);
+            var discount = await _discountRepository.FindDiscountByName(discountName);
+
+            if (product == null)
+            {
+                throw new Exception("Product or discount was not found");
+            }
+            else if(discount == null)
+            {
+                throw new Exception("Discount was not found");
+            }
+
+            product.Discount = discount;
+            await _productRepository.UpdateProductAsync(product);
+
+            return product;
         }
 
         public async Task<Product> UpdateProductAsync(ProductDto productDto)

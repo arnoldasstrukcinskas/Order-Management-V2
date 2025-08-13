@@ -17,8 +17,10 @@ builder.Services.AddControllers();
 
 //Repositories
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
 //Services
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IDiscountService, DiscountService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

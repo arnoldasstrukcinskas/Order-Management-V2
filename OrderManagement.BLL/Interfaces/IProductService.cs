@@ -10,10 +10,11 @@ namespace OrderManagement.BLL.Interfaces
 {
     public interface IProductService
     {
-        Task <Product> AddProductAsync(ProductDto productDto);
-        Task <Product> UpdateProductAsync(ProductDto productDto);
-        Task <Product> DeleteProductAsync(int id);
-        Task <Product> GetProductByName(string name);
-        Task <List<Product>> GetProductsByName(string name);
+        Task<Product> AddProductAsync(ProductDto productDto);
+        Task<Product> UpdateProductAsync(ProductDto productDto);
+        Task<Product> DeleteProductAsync(int id);
+        Task<Product> GetProductByName(string name);
+        Task<List<Product>> GetProductsByName(string name);
+        Task<Product> SetDiscount(string productName, string discountName);
     }
 }
