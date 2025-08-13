@@ -1,4 +1,5 @@
 ﻿using OrderManagement.BLL.DTO;
+using OrderManagement.BLL.DTO.Product;
 using OrderManagement.BLL.Interfaces;
 using OrderManagement.DATA.Entities;
 using OrderManagement.DATA.Repositories.Interfaces;
@@ -96,6 +97,18 @@ namespace OrderManagement.BLL.Services
             await _discountRepository.UpdateDiscount(discount);
 
             return discountDto;
+        }
+
+        public double ApplyDiscount(int quantity, ResponseProductDto product)
+        {
+            double percentage = (100.0 - product.Discount.Percentage) / 100.0;
+
+            if(quantity >= product.Discount.MinQuantity)
+            {
+                return percentage;
+            }
+
+            return 1.0;
         }
     }
 }

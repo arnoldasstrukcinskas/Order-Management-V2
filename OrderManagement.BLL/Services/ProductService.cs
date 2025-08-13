@@ -1,4 +1,4 @@
-﻿using OrderManagement.BLL.DTO;
+﻿using OrderManagement.BLL.DTO.Product;
 using OrderManagement.BLL.Interfaces;
 using OrderManagement.DATA.Entities;
 using OrderManagement.DATA.Repositories.Interfaces;
@@ -21,7 +21,7 @@ namespace OrderManagement.BLL.Services
         }
 
 
-        public async Task<Product> AddProductAsync(ProductDto productDto)
+        public async Task<CreateProductDto> AddProductAsync(CreateProductDto productDto)
         {
             Product product = new Product
             {
@@ -31,25 +31,70 @@ namespace OrderManagement.BLL.Services
             };
             await _productRepository.AddProductAsync(product);
 
-            return product;
+            return productDto;
         }
 
-        public async Task<Product> DeleteProductAsync(int id)
+        public async Task<CreateProductDto> DeleteProductAsync(int id)
         {
-           return await _productRepository.DeleteProductAsync(id);
+            var product = await _productRepository.DeleteProductAsync(id);
+
+            return new CreateProductDto
+            {
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price
+            };
         }
 
-        public async Task<Product> GetProductByName(string name)
+        public async Task<ResponseProductDto> GetProductByName(string name)
         {
-            return await _productRepository.GetProductByName(name);
+            var product = await _productRepository.GetProductByName(name);
+            if(product == null)
+            {
+                throw new Exception("Product was not found");
+            }
+
+            return new ResponseProductDto
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                DiscountId = product.DiscountId,
+                Discount = product.Discount,
+            };
         }
 
-        public async Task<List<Product>> GetProductsByName(string name)
+        public async Task<List<ResponseProductDto>> GetProductsByName(string name)
         {
-            return await _productRepository.GetProductsByName(name);
+            var products = await _productRepository.GetProductsByName(name);
+            
+            if(products == null)
+            {
+                throw new Exception("Products was not found.");
+            }
+
+            List<ResponseProductDto> productsDto = new List<ResponseProductDto>();
+
+            foreach(var product in products)
+            {
+                ResponseProductDto productDto = new ResponseProductDto
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    Description = product.Description,
+                    Price = product.Price,
+                    DiscountId = product.DiscountId,
+                    Discount = product.Discount
+                };
+
+                productsDto.Add(productDto);
+            }
+
+            return productsDto;
         }
 
-        public async Task<Product> SetDiscount(string productName, string discountName)
+        public async Task<ResponseProductDto> SetDiscount(string productName, string discountName)
         {
             var product = await _productRepository.GetProductByName(productName);
             var discount = await _discountRepository.FindDiscountByName(discountName);
@@ -66,10 +111,18 @@ namespace OrderManagement.BLL.Services
             product.Discount = discount;
             await _productRepository.UpdateProductAsync(product);
 
-            return product;
+            return new ResponseProductDto
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                DiscountId = product.DiscountId,
+                Discount = product.Discount
+            };
         }
 
-        public async Task<Product> UpdateProductAsync(ProductDto productDto)
+        public async Task<CreateProductDto> UpdateProductAsync(CreateProductDto productDto)
         {
             Product product = new Product
             {
@@ -77,7 +130,9 @@ namespace OrderManagement.BLL.Services
                 Description = productDto.Description,
                 Price = productDto.Price,
             };
-            return await _productRepository.UpdateProductAsync(product);
+            await _productRepository.UpdateProductAsync(product);
+
+            return productDto;
         }
     }
 }

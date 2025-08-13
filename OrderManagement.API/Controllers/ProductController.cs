@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using OrderManagement.BLL.DTO;
+using OrderManagement.BLL.DTO.Product;
 using OrderManagement.BLL.Interfaces;
 using OrderManagement.BLL.Services;
 
@@ -22,7 +22,7 @@ namespace OrderManagement.API.Controllers
         /// </summary>
         /// <returns>Added product object with ID, name, description, and price.</returns>
         [HttpPost]
-        public async Task<IActionResult> AddProduct(ProductDto productDto)
+        public async Task<IActionResult> AddProduct(CreateProductDto productDto)
         {
             var product = await _productService.AddProductAsync(productDto);
 

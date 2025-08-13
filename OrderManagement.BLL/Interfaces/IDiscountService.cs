@@ -1,4 +1,5 @@
 ﻿using OrderManagement.BLL.DTO;
+using OrderManagement.BLL.DTO.Product;
 using OrderManagement.DATA.Entities;
 using System;
 using System.Collections.Generic;
@@ -14,5 +15,6 @@ namespace OrderManagement.BLL.Interfaces
         Task<DiscountDto> UpdateDiscount(DiscountDto discountDto);
         Task<DiscountDto> FindDiscountByName(string name);
         Task<DiscountDto> DeleteDiscountById(int id);
+        double ApplyDiscount(int quantity, ResponseProductDto product);
     }
 }
