@@ -83,10 +83,10 @@ namespace OrderManagement.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GenerateRerportByDiscount(string discountName)
         {
-            var products = await _discountService.GetDiscountReportByName(discountName);
-            if (products != null)
+            var report = await _discountService.GetDiscountReportByName(discountName);
+            if (report != null)
             {
-                return Ok(products);
+                return Ok(report);
             }
             else
             {

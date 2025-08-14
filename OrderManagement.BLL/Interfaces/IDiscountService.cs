@@ -15,7 +15,7 @@ namespace OrderManagement.BLL.Interfaces
         Task<DiscountDto> UpdateDiscount(DiscountDto discountDto);
         Task<DiscountDto> FindDiscountByName(string name);
         Task<DiscountDto> DeleteDiscountByName(string name);
-        Task<List<ResponseProductDto>> GetDiscountReportByName(string name);
+        Task<ReportDto> GetDiscountReportByName(string name);
         double ApplyDiscount(int quantity, ResponseProductDto product);
     }
 }

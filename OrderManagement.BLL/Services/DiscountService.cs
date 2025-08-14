@@ -101,14 +101,20 @@ namespace OrderManagement.BLL.Services
             return discountDto;
         }
 
-        public async Task<List<ResponseProductDto>> GetDiscountReportByName(string name)
+        public async Task<ReportDto> GetDiscountReportByName(string name)
         {
+            ReportDto report = new ReportDto();
             var orderItems = await _orderItemRepostitory.GetOrderItemsByDiscount(name);
             var products = new List<ResponseProductDto>();
+
             foreach (var orderItem in orderItems)
             {
                 if (orderItem.Discount != null && orderItem.Discount.Name.Equals(name))
                 {
+                    report.Name = orderItem.Discount.Name;
+                    report.TotalQuantity += orderItem.Quantity;
+                    report.TotalAmount += orderItem.TotalPrice;
+
                     ResponseProductDto product = new ResponseProductDto
                     {
                         Id = orderItem.ProductId,
@@ -121,7 +127,10 @@ namespace OrderManagement.BLL.Services
                     products.Add(product);
                 }
             }
-            return products;
+
+            report.Products = products;
+
+            return report;
         }
 
         public double ApplyDiscount(int quantity, ResponseProductDto product)
