@@ -54,14 +54,14 @@ For project to launch firstly need to download project or clone it from reposito
   ```
 - In terminal use this command:
   ```bash
-  git clone https://github.com/arnoldasstrukcinskas/Order-Management.git
+  git clone https://github.com/arnoldasstrukcinskas/Order-Management-V2.git
   ```
 - Move to [Launching](#launching)
   
 ## Launching
 #### 1. Go to project directory(this is example directory)
 ```bash
-cd "D:\Download\Order Management API\Order Management"
+cd "D:\Download\OrderManagement_V2"
 ```
 #### 2. Build project(with logs)
 ```bash
@@ -71,7 +71,7 @@ docker-compose build
 ```bash
 docker-compose up
 ```
-#### 3. Launch project(without logs)
+#### 3. Launch project(without logs) -> OPTIONAL
 ```bash
 docker-compose up -d
 ```
