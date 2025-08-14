@@ -37,7 +37,7 @@ namespace OrderManagement.API.Controllers
         }
 
         /// <summary>
-        /// Deletes Order from postgreSql database.
+        /// Gets order from postgreSql database.
         /// </summary>
         /// <returns>Deleted order object with ID, Date, Price, Total items and list of items.</returns>
         [HttpGet]
@@ -56,21 +56,22 @@ namespace OrderManagement.API.Controllers
         }
 
         /// <summary>
-        /// Finds Order in postgreSql database.
+        /// Deletes Order in postgreSql database.
         /// </summary>
+        /// <param id="Enter order id">Id of order to delete.</param>
         /// <returns>Found order object with ID, Date, Price, Total items and list of items.</returns>
         [HttpDelete]
         public async Task<IActionResult> DeleteOrderById(int id)
         {
             var order = await _orderService.DeleteOrderById(id);
 
-            if(order == null)
+            if(order != null)
             {
                 return Ok(order);
             }
             else
             {
-                return BadRequest("Order was not found");
+                return BadRequest("Controller: Order was not found");
             }
         }
 

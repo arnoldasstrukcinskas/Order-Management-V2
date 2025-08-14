@@ -12,6 +12,6 @@ namespace OrderManagement.DATA.Repositories.Interfaces
         Task<Discount> CreateDiscount(Discount discount);
         Task<Discount> UpdateDiscount(Discount discount);
         Task<Discount> FindDiscountByName(string name);
-        Task<Discount> DeleteDiscountById(int id);
+        Task<Discount> DeleteDiscountByName(string name);
     }
 }

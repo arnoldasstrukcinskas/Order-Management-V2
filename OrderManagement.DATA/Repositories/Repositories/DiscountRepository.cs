@@ -26,13 +26,13 @@ namespace OrderManagement.DATA.Repositories.Repositories
             return discount;
         }
 
-        public async Task<Discount> DeleteDiscountById(int id)
+        public async Task<Discount> DeleteDiscountByName(string name)
         {
-            var discount = await _dbContext.Discounts.FindAsync(id);
+            var discount = await _dbContext.Discounts.FirstOrDefaultAsync(d => d.Name.Equals(name));
 
-            if(discount == null)
+            if (discount == null)
             {
-                throw new Exception($"Discount with {id} was not found.");
+                throw new Exception($"Discount with name: {name} was not found.");
             }
 
             _dbContext.Discounts.Remove(discount);

@@ -26,10 +26,9 @@ namespace OrderManagement.DATA.Repositories.Repositories
             return order;
         }
 
-        public async Task<Order> DeleteOrderById(int id)
+        public async Task<Order> DeleteOrder(Order order)
         {
-            var order = await _dbContext.Orders.FindAsync(id);
-
+ 
             if(order == null)
             {
                 throw new Exception("No such order");
@@ -43,7 +42,12 @@ namespace OrderManagement.DATA.Repositories.Repositories
 
         public async Task<Order> GetOrderById(int id)
         {
-            return await _dbContext.Orders.FindAsync(id);
+            var order = await _dbContext.Orders
+                .Include(o => o.ItemsInOrder)
+                .ThenInclude(oi => oi.Product)
+                .FirstOrDefaultAsync(o => o.Id == id);
+
+            return order;
         }
     }
 }

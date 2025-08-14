@@ -10,7 +10,7 @@ namespace OrderManagement.DATA.Repositories.Interfaces
     public interface IOrderRepository
     {
         public Task<Order> CreateOrder(Order order);
-        public Task<Order> DeleteOrderById(int id);
+        public Task<Order> DeleteOrder(Order order);
         public Task<Order> GetOrderById(int id);
     }
 }

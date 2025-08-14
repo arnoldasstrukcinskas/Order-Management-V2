@@ -20,6 +20,7 @@ namespace OrderManagement.API.Controllers
         /// <summary>
         /// Adds Discount to postgreSql database.
         /// </summary>
+        /// <param discount="Enter discoutn data">Name, percentage, min q of discount to create.</param>
         /// <returns>Added DTO of discount with ID, discount name, percentage and minimum quantity.</returns>
         [HttpPost]
         public async Task<IActionResult> CreateDiscount(DiscountDto discountDto)
@@ -60,9 +61,9 @@ namespace OrderManagement.API.Controllers
         /// </summary>
         /// <returns>DTO of deleted discount from databse .</returns>
         [HttpDelete]
-        public async Task<IActionResult> DeleteDiscount(int id)
+        public async Task<IActionResult> DeleteDiscountByName(string name)
         {
-            var discount = await _discountService.DeleteDiscountById(id);
+            var discount = await _discountService.DeleteDiscountByName(name);
 
             if (discount != null)
             {
@@ -71,6 +72,25 @@ namespace OrderManagement.API.Controllers
             else
             {
                 return BadRequest("Discount was not deleted");
+            }
+        }
+
+        /// <summary>
+        /// Gets Report of discounted products by specified discount.
+        /// </summary>
+        /// /// <param discountName="Enter discount name">Name of discount was applied to products.</param>
+        /// <returns>List of products with soecified discount</returns>
+        [HttpGet]
+        public async Task<IActionResult> GenerateRerportByDiscount(string discountName)
+        {
+            var products = await _discountService.GetDiscountReportByName(discountName);
+            if (products != null)
+            {
+                return Ok(products);
+            }
+            else
+            {
+                return BadRequest("Report was not formated.");
             }
         }
     }

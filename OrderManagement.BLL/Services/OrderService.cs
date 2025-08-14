@@ -55,14 +55,14 @@ namespace OrderManagement.BLL.Services
 
         public async Task<ResponseOrderDto> DeleteOrderById(int id)
         {
-            var order = await _orderRepository.DeleteOrderById(id);
+            var order = await _orderRepository.GetOrderById(id);
 
             if(order == null)
             {
                 throw new Exception("Order was not found");
             }
 
-            return new ResponseOrderDto
+            var responseOrderDto = new ResponseOrderDto
             {
                 Id = order.Id,
                 OrderDate = order.OrderDate,
@@ -74,6 +74,10 @@ namespace OrderManagement.BLL.Services
                     Quantity = item.Quantity
                 }).ToList()
             };
+
+            await _orderRepository.DeleteOrder(order);
+
+            return responseOrderDto;
         }
 
         public async Task<ResponseOrderDto> GetOrderById(int id)
@@ -108,7 +112,7 @@ namespace OrderManagement.BLL.Services
                 var discount = _discountService.ApplyDiscount(item.Quantity, product);
                 
                 totalAmount += (item.Quantity * (double) product.Price) * discount;
-                Console.WriteLine($"Quantity: {item.Quantity}, Price: {product.Price}, Discount: {product.Discount.Percentage / 100}");
+                //Console.WriteLine($"Quantity: {item.Quantity}, Price: {product.Price}, Discount: {product.Discount.Percentage / 100}");
 
             }
             return totalAmount;
@@ -123,9 +127,9 @@ namespace OrderManagement.BLL.Services
                 var product = await _productService.GetProductByName(orderItemDto.ItemName);
                 OrderItem orderItem = new OrderItem
                 {
-                    OrderId = newOrder.Id,
+                    Order = newOrder,
                     ProductId = product.Id,
-                    DiscountId = product.DiscountId.HasValue ? product.DiscountId.Value : 0,
+                    DiscountId = product.DiscountId,
                     Discount = product.Discount,
                     Quantity = orderItemDto.Quantity,
                     UnitPrice = product.Price,

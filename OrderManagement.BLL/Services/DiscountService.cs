@@ -16,9 +16,11 @@ namespace OrderManagement.BLL.Services
     {
 
         private readonly IDiscountRepository _discountRepository;
-        public DiscountService(IDiscountRepository discountRepository)
+        private readonly IOrderItemRepository _orderItemRepostitory;
+        public DiscountService(IDiscountRepository discountRepository, IOrderItemRepository orderItemRepository)
         {
             _discountRepository = discountRepository;
+            _orderItemRepostitory = orderItemRepository;
         }
 
         public async Task<DiscountDto> CreateDiscount(DiscountDto discountDto)
@@ -40,18 +42,18 @@ namespace OrderManagement.BLL.Services
 
         }
 
-        public async Task<DiscountDto> DeleteDiscountById(int id)
+        public async Task<DiscountDto> DeleteDiscountByName(string name)
         {
-            if(id <= 0)
+            if(string.IsNullOrWhiteSpace(name))
             {
-                throw new Exception("Wrong Id, try one more time!");
+                throw new Exception("Wrong name, try one more time!");
             }
 
-            var discount = await _discountRepository.DeleteDiscountById(id);
+            var discount = await _discountRepository.DeleteDiscountByName(name);
 
             if(discount == null)
             {
-                throw new Exception($"Discount with id: {id} was not found");
+                throw new Exception($"Discount with name: {name} was not found");
             }
 
             return new DiscountDto
@@ -99,13 +101,44 @@ namespace OrderManagement.BLL.Services
             return discountDto;
         }
 
+        public async Task<List<ResponseProductDto>> GetDiscountReportByName(string name)
+        {
+            var orderItems = await _orderItemRepostitory.GetOrderItemsByDiscount(name);
+            var products = new List<ResponseProductDto>();
+            foreach (var orderItem in orderItems)
+            {
+                if (orderItem.Discount != null && orderItem.Discount.Name.Equals(name))
+                {
+                    ResponseProductDto product = new ResponseProductDto
+                    {
+                        Id = orderItem.ProductId,
+                        Name = orderItem.Product.Name,
+                        Description = orderItem.Product.Description,
+                        Price = orderItem.UnitPrice,
+                        DiscountId = orderItem.DiscountId,
+                        Discount = orderItem.Discount
+                    };
+                    products.Add(product);
+                }
+            }
+            return products;
+        }
+
         public double ApplyDiscount(int quantity, ResponseProductDto product)
         {
-            double percentage = (100.0 - product.Discount.Percentage) / 100.0;
-
-            if(quantity >= product.Discount.MinQuantity)
+            if(product.Discount == null)
             {
-                return percentage;
+                return 1.0;
+            }
+
+            if (quantity < product.Discount.MinQuantity)
+            {
+                return 1.0;
+            }
+
+            if (product.Discount.Percentage != null && product.Discount.Percentage >= 0 && product.Discount.Percentage <= 100)
+            {
+                return (100.0 - product.Discount.Percentage) / 100.0;
             }
 
             return 1.0;
