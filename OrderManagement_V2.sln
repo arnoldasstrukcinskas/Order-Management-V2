@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36301.6 d17.14
+VisualStudioVersion = 17.14.36301.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderManagement.API", "OrderManagement.API\OrderManagement.API.csproj", "{B5FA0D6E-8064-4191-9855-45351FD7BAD0}"
 EndProject
@@ -10,6 +10,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderManagement.DATA", "OrderManagement.DATA\OrderManagement.DATA.csproj", "{693D05CC-7134-4420-B10D-242F01904D32}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderManagement.TESTS", "OrderManagement.TESTS\OrderManagement.TESTS.csproj", "{8EBA3A54-DD5C-4043-A2BA-609A75C555AE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{693D05CC-7134-4420-B10D-242F01904D32} = {693D05CC-7134-4420-B10D-242F01904D32}
+		{96C54A03-EC97-4A9A-90C0-9B2FF3814DD8} = {96C54A03-EC97-4A9A-90C0-9B2FF3814DD8}
+	EndProjectSection
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{81DDED9D-158B-E303-5F62-77A2896D2A5A}"
 EndProject
