@@ -58,30 +58,31 @@ dotnet tool update --global dotnet-ef
 ```bash
 cd "D:\Downloads\OrderManagement_V2"
 ```
-#### 3. Create migrations of database
-##### In main directory:
+#### 3. Build project(with logs)
+```bash
+docker-compose build
+```
+#### 4. Launch project(with logs)
+```bash
+docker-compose up
+```
+#### 5. Launch project(without logs) -> OPTIONAL
+```bash
+docker-compose up -d
+```
+#### 6. Stop project(without logs)
+```bash
+ctrl + c
+```
+
+#### EXTRA! Migrations are created. (In case u will need to create migrations of database)
+##### In main directory of project:
 ```bash
 dotnet ef migrations add InitialCreate --project OrderManagement.DATA --startup-project OrderManagement.API
 ```
 ##### Auto-migrations are used but if needed to update manually:
 ```bash
 dotnet ef database update --project OrderManagement.DATA --startup-project OrderManagement.API
-```
-#### 4. Build project(with logs)
-```bash
-docker-compose build
-```
-#### 3. Launch project(with logs)
-```bash
-docker-compose up
-```
-#### 3. Launch project(without logs) -> OPTIONAL
-```bash
-docker-compose up -d
-```
-#### 4. Stop project(without logs)
-```bash
-ctrl + c
 ```
 
 ## Database
