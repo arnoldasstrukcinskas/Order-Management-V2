@@ -109,22 +109,25 @@ namespace OrderManagement.BLL.Services
 
             foreach (var orderItem in orderItems)
             {
-                if (orderItem.Discount != null && orderItem.Discount.Name.Equals(name))
+                if (orderItem.Discount != null)
                 {
-                    report.Name = orderItem.Discount.Name;
-                    report.TotalQuantity += orderItem.Quantity;
-                    report.TotalAmount += orderItem.TotalPrice;
-
-                    ResponseProductDto product = new ResponseProductDto
+                    if (orderItem.Discount.Name.Equals(name) && orderItem.Quantity >= orderItem.Discount.MinQuantity)
                     {
-                        Id = orderItem.ProductId,
-                        Name = orderItem.Product.Name,
-                        Description = orderItem.Product.Description,
-                        Price = orderItem.UnitPrice,
-                        DiscountId = orderItem.DiscountId,
-                        Discount = orderItem.Discount
-                    };
-                    products.Add(product);
+                        report.Name = orderItem.Discount.Name;
+                        report.TotalQuantity += orderItem.Quantity;
+                        report.TotalAmount += orderItem.TotalPrice;
+
+                        ResponseProductDto product = new ResponseProductDto
+                        {
+                            Id = orderItem.ProductId,
+                            Name = orderItem.Product.Name,
+                            Description = orderItem.Product.Description,
+                            Price = orderItem.UnitPrice,
+                            DiscountId = orderItem.DiscountId,
+                            Discount = orderItem.Discount
+                        };
+                        products.Add(product);
+                    }
                 }
             }
 

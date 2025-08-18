@@ -11,13 +11,13 @@ using System.Xml.Linq;
 
 namespace OrderManagement.TESTS
 {
-    public class ProductUnitTest
+    public class ProductUnitTests
     {
         private readonly Mock<IProductRepository> _mockProductRepository;
         private readonly Mock<IDiscountRepository> _mockDiscountRepository;
         private readonly ProductService _productService;
 
-        public ProductUnitTest()
+        public ProductUnitTests()
         {
             _mockProductRepository = new Mock<IProductRepository>();
             _mockDiscountRepository = new Mock<IDiscountRepository>();
