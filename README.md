@@ -25,20 +25,6 @@ Additionally API can generate report of all or specified products.
 ## Installation
 1. Whole project is containerized and created using containers so firstly you need to install docker engine:
 Link: https://docs.docker.com/engine/install/
-2. For this API to work, you need to dowload three images: Asp.net, postgresql and pgadmin
-
-### ASP.net Image
-```bash
-  docker run -d p 5000:5000  mcr.microsoft.com/dotnet/aspnet:latest
-```
-
-### PostgreSQL database Image
-Login
-UserName: example
-Password: login
-```bash
- docker run -d p 5432:5432  postgres:latest
-```
 
 ## Downloading project
 For project to launch firstly need to download project or clone it from repository.
@@ -59,11 +45,29 @@ For project to launch firstly need to download project or clone it from reposito
 - Move to [Launching](#launching)
   
 ## Launching
-#### 1. Go to project directory(this is example directory)
+#### 1. If you do not have .NET tools pacakge you have to install or update it(for migrations):
+##### Install (Use in any directory):
 ```bash
-cd "D:\Download\OrderManagement_V2"
+dotnet tool install --global dotnet-ef
 ```
-#### 2. Build project(with logs)
+##### Update: (Use in any directory)
+```bash
+dotnet tool update --global dotnet-ef
+```
+#### 2. Go to project directory(this is example directory)
+```bash
+cd "D:\Downloads\OrderManagement_V2"
+```
+#### 3. Create migrations of database
+##### In main directory:
+```bash
+dotnet ef migrations add InitialCreate --project OrderManagement.DATA --startup-project OrderManagement.API
+```
+##### Auto-migrations are used but if needed to update manually:
+```bash
+dotnet ef database update --project OrderManagement.DATA --startup-project OrderManagement.API
+```
+#### 4. Build project(with logs)
 ```bash
 docker-compose build
 ```
@@ -92,7 +96,7 @@ docker exec -it 27bf4d7db795 bash
 ```
 #### 3. Connect to database
 ```bash
-psql -U example -d OrderManagement_v2
+psql -U example -d orderManagement_v2
 ```
 #### 3. Chech if all tables exists
 ```bash
